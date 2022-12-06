@@ -3,7 +3,6 @@
 #### Required variables
 # GOOGLE_CLOUD_PROJECT_ID: GCP project ID
 # IMAGE_NAME: the name of the instance image
-# VERSION: Instance image version number
 # NAME: Image source instance name
 
 # The next line updates PATH for the Google Cloud SDK.
@@ -17,7 +16,6 @@ if [ -f '/usr/local/src/google-cloud-sdk/completion.bash.inc' ]; then
 fi
 
 LOCATION='asia'
-LABELS="version=$VERSION"
 
 SOURCE_DISK=`gcloud compute instances list --filter="name=($NAME)" --format="value(disks.source.basename())" --project=$GOOGLE_CLOUD_PROJECT_ID`
 SOURCE_DISK_ZONE=`gcloud compute disks list --filter="name=($SOURCE_DISK)" --format="value(zone.basename())" --project=$GOOGLE_CLOUD_PROJECT_ID`
@@ -47,7 +45,6 @@ gcloud compute images \
     --source-disk=$SOURCE_DISK \
     --source-disk-zone=$SOURCE_DISK_ZONE \
     --storage-location=$LOCATION \
-    --labels=$LABELS \
     --project=$GOOGLE_CLOUD_PROJECT_ID
 
 exit $?

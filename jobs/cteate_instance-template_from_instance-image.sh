@@ -6,7 +6,6 @@
 # MACHINE_TYPE: Instance machine type
 # SERVICE_ACCOUNT: Service account for running instances
 # TEMPLATE_NAME: Target instance template name
-# VERSION: Instance image version number
 
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '/usr/local/src/google-cloud-sdk/path.bash.inc' ]; then
@@ -18,7 +17,6 @@ if [ -f '/usr/local/src/google-cloud-sdk/completion.bash.inc' ]; then
     . '/usr/local/src/google-cloud-sdk/completion.bash.inc'
 fi
 
-LABELS="version=$VERSION"
 TAGS="http-server"
 
 # scopes
@@ -99,7 +97,6 @@ gcloud compute instance-templates \
     --no-shielded-secure-boot \
     --shielded-vtpm \
     --shielded-integrity-monitoring \
-    --labels="$LABELS" \
     --tags="$TAGS" \
     --reservation-affinity=any \
     --project="$GOOGLE_CLOUD_PROJECT_ID"
