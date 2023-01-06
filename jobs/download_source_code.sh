@@ -59,5 +59,6 @@ else
 fi
 
 sudo mkdir -p ${WWW_HOME}/current/storage/app/tmp/
+sudo mv -f ${WWW_HOME}/current/.env ${WWW_HOME}/current/.env.1
 sudo cp ${WWW_HOME}/env_file ${WWW_HOME}/current/.env
 sudo chown -R ${WWW_USER} ${WWW_HOME}/current
