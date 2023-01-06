@@ -59,5 +59,5 @@ else
 fi
 
 sudo mkdir -p ${WWW_HOME}/current/storage/app/tmp/
-sudo echo -e "${ENV_LIST}" > ${WWW_HOME}/current/.env
+sudo cp ${WWW_HOME}/env_file ${WWW_HOME}/current/.env
 sudo chown -R ${WWW_USER} ${WWW_HOME}/current
