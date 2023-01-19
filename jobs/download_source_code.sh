@@ -63,3 +63,12 @@ sudo mkdir -p ${WWW_HOME}/current/storage/app/tmp/
 sudo mv -f ${WWW_HOME}/current/.env ${WWW_HOME}/current/.env.1
 sudo cp ${WWW_HOME}/env_file ${WWW_HOME}/current/.env
 sudo chown -R ${WWW_USER}. ${WWW_HOME}/current
+
+# Execute house keeping
+OLD_DIRECTORYS=`ls -td */ | awk '{if(NR>4){print}}'`
+for OLD_DIRECTORY in $OLD_DIRECTORYS; do
+    if [ -n "$OLD_DIRECTORY" ]; then
+        rm -rf $OLD_DIRECTORY
+    fi
+done
+find . -xtype l -print0 | xargs -0 rm -f
