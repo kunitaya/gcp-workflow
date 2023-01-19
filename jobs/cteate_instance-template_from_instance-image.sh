@@ -6,6 +6,7 @@
 # MACHINE_TYPE: Instance machine type
 # SERVICE_ACCOUNT: Service account for running instances
 # TEMPLATE_NAME: Target instance template name
+# WEB_SRV: Web server(httpd / nginx)
 
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '/usr/local/src/google-cloud-sdk/path.bash.inc' ]; then
@@ -49,7 +50,7 @@ EOS
 # startup script
 STARTUP_SCRIPT=$(cat << 'EOS'
 #!/bin/bash
-systemctl status google-cloud-ops-agent
+systemctl status google-cloud-ops-agent > /dev/null 2>&1
 if [ $? -ne 0 ]; then
     cd /var/tmp
     curl -sSO https://dl.google.com/cloudagents/add-google-cloud-ops-agent-repo.sh
@@ -61,11 +62,11 @@ if [ $? -ne 0 ]; then
         sudo systemctl restart google-cloud-ops-agent
     fi
 fi
-systemctl enable --now nginx
+systemctl enable --now
 EOS
 )
 # create metadata
-METADATA="ssh-keys=$SSH_KEYS,startup-script=$STARTUP_SCRIPT"
+METADATA="ssh-keys=$SSH_KEYS,startup-script=$STARTUP_SCRIPT $WEB_SRV"
 
 
 ## Create disk settings
