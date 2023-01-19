@@ -3,19 +3,20 @@
 #### Required variables
 # WWW_HOME: Web app home directory
 # WWW_USER: Web app execution user
-# GITHUB_DIRECTORY: git directory
+# GITHUB_DIRECTORY: git directory name
 # GITHUB_ACCOUNT: github account
 # GITHUB_REPOSITORY: github repository
 # GITHUB_BRANCH: github branch
 
-sudo mkdir -p ${GITHUB_DIRECTORY}
-cd ${GITHUB_DIRECTORY}
+SOURCE_CODE_DIR=${WWW_HOME}/${GITHUB_DIRECTORY}
+sudo mkdir -p ${SOURCE_CODE_DIR}
+cd ${SOURCE_CODE_DIR}
 
-sudo git -C ${GITHUB_DIRECTORY} status > /dev/null 2>&1
+sudo git -C ${SOURCE_CODE_DIR} status > /dev/null 2>&1
 if [ $? -ne 0 ]; then
     echo 'Start git init.'
-    sudo git -C ${GITHUB_DIRECTORY} init
-    sudo tee ${GITHUB_DIRECTORY}/.git/config << _EOF_ > /dev/null
+    sudo git -C ${SOURCE_CODE_DIR} init
+    sudo tee ${SOURCE_CODE_DIR}/.git/config << _EOF_ > /dev/null
 [core]
     repositoryformatversion = 0
     filemode = true
@@ -26,9 +27,9 @@ if [ $? -ne 0 ]; then
     sparsecheckout = true
 _EOF_
 
-    sudo git -C ${GITHUB_DIRECTORY} remote add origin git@github.com:$GITHUB_ACCOUNT/$GITHUB_REPOSITORY.git
+    sudo git -C ${SOURCE_CODE_DIR} remote add origin git@github.com:$GITHUB_ACCOUNT/$GITHUB_REPOSITORY.git
 
-    sudo tee ${GITHUB_DIRECTORY}/.git/info/sparse-checkout << _EOF_ > /dev/null
+    sudo tee ${SOURCE_CODE_DIR}/.git/info/sparse-checkout << _EOF_ > /dev/null
 /*
 !/.env*
 !/batch
@@ -40,15 +41,15 @@ _EOF_
 !/swagger
 _EOF_
 
-    sudo git -C ${GITHUB_DIRECTORY} fetch --depth 1
-    sudo git -C ${GITHUB_DIRECTORY} switch ${GITHUB_BRANCH}
+    sudo git -C ${SOURCE_CODE_DIR} fetch --depth 1
+    sudo git -C ${SOURCE_CODE_DIR} switch ${GITHUB_BRANCH}
 
 fi
 
 echo 'Start git pull.'
-sudo git -C ${GITHUB_DIRECTORY} pull
-TAG=`sudo git -C ${GITHUB_DIRECTORY} tag --sort=-taggerdate | head -1`
-LARAVEL_DIR=`find ${GITHUB_DIRECTORY} -name 'index.php' | grep 'public/index.php' | sed -e 's/public\/index.php$//'`
+sudo git -C ${SOURCE_CODE_DIR} pull
+TAG=`sudo git -C ${SOURCE_CODE_DIR} tag --sort=-taggerdate | head -1`
+LARAVEL_DIR=`find ${SOURCE_CODE_DIR} -name 'index.php' | grep 'public/index.php' | sed -e 's/public\/index.php$//'`
 
 cd ${WWW_HOME}
 if [ -n "$TAG" ]; then
