@@ -49,14 +49,14 @@ fi
 echo 'Start git pull.'
 sudo git -C ${SOURCE_CODE_DIR} pull
 TAG=`sudo git -C ${SOURCE_CODE_DIR} tag --sort=-taggerdate | head -1`
-LARAVEL_DIR=`find ${SOURCE_CODE_DIR} -name 'index.php' | grep 'public/index.php' | sed -e 's/public\/index.php$//'`
+DOCUMENT_ROOT=`find ${SOURCE_CODE_DIR} -name 'index.php' | grep 'public/index.php' | sed -e 's/public\/index.php$//'`
 
 cd ${WWW_HOME}
 if [ -n "$TAG" ]; then
-    sudo ln -nfs ${LARAVEL_DIR} ${TAG}
+    sudo ln -nfs ${DOCUMENT_ROOT} ${TAG}
     sudo ln -nfs ${TAG} current
 else
-    sudo ln -nfs ${LARAVEL_DIR} current
+    sudo ln -nfs ${DOCUMENT_ROOT} current
 fi
 
 sudo mkdir -p ${WWW_HOME}/current/storage/app/tmp/
