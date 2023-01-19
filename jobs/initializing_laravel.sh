@@ -6,7 +6,7 @@
 
 export HOME=/root
 
-cd $WWW_HOME/current/
+cd ${WWW_HOME}/current/
 . .env
 
 yes | sudo COMPOSER_ALLOW_SUPERUSER=1 /bin/composer install
@@ -22,6 +22,6 @@ sudo /bin/php artisan cache:clear
 [ $? -eq 0 ]&& sudo /bin/php artisan optimize
 [ $? -eq 0 ]&& yes | sudo /bin/composer dump-autoload
 [ $? -eq 0 ]&& sudo rm -f bootstrap/cache/config.php
-[ $? -eq 0 ]&& sudo chown -R ${WWW_USER}. $WWW_HOME
+[ $? -eq 0 ]&& sudo chown -R ${WWW_USER}. ${WWW_HOME}
 
 exit $?
