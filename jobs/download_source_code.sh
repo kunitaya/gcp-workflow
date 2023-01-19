@@ -12,8 +12,7 @@ SOURCE_CODE_DIR=${WWW_HOME}/${GITHUB_DIRECTORY}
 sudo mkdir -p ${SOURCE_CODE_DIR}
 cd ${SOURCE_CODE_DIR}
 
-sudo git -C ${SOURCE_CODE_DIR} status > /dev/null 2>&1
-if [ $? -ne 0 ]; then
+if [ ! -d '.git' ]; then
     echo 'Start git init.'
     sudo git -C ${SOURCE_CODE_DIR} init
     sudo tee ${SOURCE_CODE_DIR}/.git/config << _EOF_ > /dev/null
@@ -49,26 +48,28 @@ fi
 echo 'Start git pull.'
 sudo git -C ${SOURCE_CODE_DIR} pull
 TAG=`sudo git -C ${SOURCE_CODE_DIR} tag --sort=-taggerdate | head -1`
-DOCUMENT_ROOT=`find ${SOURCE_CODE_DIR} -name 'index.php' | grep 'public/index.php' | sed -e 's/public\/index.php$//'`
 
 cd ${WWW_HOME}
+PROJECT_ROOT=`find ${GITHUB_DIRECTORY} -name 'index.php' | grep 'public/index.php' | sed -e 's/public\/index.php$//'`
 if [ -n "$TAG" ]; then
-    sudo ln -nfs ${DOCUMENT_ROOT} ${TAG}
+    sudo ln -nfs ${PROJECT_ROOT} ${TAG}
     sudo ln -nfs ${TAG} current
 else
-    sudo ln -nfs ${DOCUMENT_ROOT} current
+    sudo ln -nfs ${PROJECT_ROOT} current
 fi
 
-sudo mkdir -p ${WWW_HOME}/current/storage/app/tmp/
-sudo mv -f ${WWW_HOME}/current/.env ${WWW_HOME}/current/.env.1
-sudo cp ${WWW_HOME}/env_file ${WWW_HOME}/current/.env
-sudo chown -R ${WWW_USER}. ${WWW_HOME}/current
+if [ -f "current/.env" ]; then
+    sudo mv -f current/.env current/.env.1
+fi
+sudo cp env_file current/.env
+sudo mkdir -p current/storage/app/tmp/
+sudo chown -R ${WWW_USER}. current
 
 # Execute house keeping
 OLD_DIRECTORYS=`ls -td */ | awk '{if(NR>4){print}}'`
 for OLD_DIRECTORY in $OLD_DIRECTORYS; do
     if [ -n "$OLD_DIRECTORY" ]; then
-        rm -rf $OLD_DIRECTORY
+        sudo rm -rf $OLD_DIRECTORY
     fi
 done
 find . -xtype l -print0 | xargs -0 rm -f
