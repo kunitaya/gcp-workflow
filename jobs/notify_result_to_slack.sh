@@ -6,15 +6,7 @@
 # RESULT: workflow result
 # SLACK_WEBHOOK_URL: Slack webhook URLs
 
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/usr/local/src/google-cloud-sdk/path.bash.inc' ]; then
-    . '/usr/local/src/google-cloud-sdk/path.bash.inc'
-fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f '/usr/local/src/google-cloud-sdk/completion.bash.inc' ]; then
-    . '/usr/local/src/google-cloud-sdk/completion.bash.inc'
-fi
+##!include include_GoogleCloudSDK
 
 INSTANCE_GROUPS="`gcloud compute instance-groups list --format='get(name)' --project=$GOOGLE_CLOUD_PROJECT_ID | grep $INSTANCE_GROUP_PREFIX`"
 

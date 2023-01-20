@@ -6,15 +6,7 @@
 # NAME: Image source instance name
 # LOCATION: Specifies a Cloud Storage location
 
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/usr/local/src/google-cloud-sdk/path.bash.inc' ]; then
-    . '/usr/local/src/google-cloud-sdk/path.bash.inc'
-fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f '/usr/local/src/google-cloud-sdk/completion.bash.inc' ]; then
-    . '/usr/local/src/google-cloud-sdk/completion.bash.inc'
-fi
+##!include include_GoogleCloudSDK
 
 SOURCE_DISK=`gcloud compute instances list --filter="name=($NAME)" --format="value(disks.source.basename())" --project=$GOOGLE_CLOUD_PROJECT_ID`
 SOURCE_DISK_ZONE=`gcloud compute disks list --filter="name=($SOURCE_DISK)" --format="value(zone.basename())" --project=$GOOGLE_CLOUD_PROJECT_ID`

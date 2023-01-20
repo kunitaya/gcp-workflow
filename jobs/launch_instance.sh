@@ -4,15 +4,7 @@
 # GOOGLE_CLOUD_PROJECT_ID: GCP project ID
 # NAME: Image source instance name
 
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/usr/local/src/google-cloud-sdk/path.bash.inc' ]; then
-    . '/usr/local/src/google-cloud-sdk/path.bash.inc'
-fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f '/usr/local/src/google-cloud-sdk/completion.bash.inc' ]; then
-    . '/usr/local/src/google-cloud-sdk/completion.bash.inc'
-fi
+##!include include_GoogleCloudSDK
 
 ZONE=`gcloud compute instances list --filter="name=($NAME)" --format="value(zone.basename())" --project=$GOOGLE_CLOUD_PROJECT_ID`
 STATUS=`gcloud compute instances list --filter="name=($NAME)" --format="value(status)" --project=$GOOGLE_CLOUD_PROJECT_ID`

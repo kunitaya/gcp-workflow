@@ -5,15 +5,7 @@
 # INSTANCE_GROUPS: Target instance groups
 # TEMPLATE_NAME: Instance template name
 
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/usr/local/src/google-cloud-sdk/path.bash.inc' ]; then
-    . '/usr/local/src/google-cloud-sdk/path.bash.inc'
-fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f '/usr/local/src/google-cloud-sdk/completion.bash.inc' ]; then
-    . '/usr/local/src/google-cloud-sdk/completion.bash.inc'
-fi
+##!include include_GoogleCloudSDK
 
 INSTANCE_GROUP_LIST=()
 for i in $INSTANCE_GROUPS; do
